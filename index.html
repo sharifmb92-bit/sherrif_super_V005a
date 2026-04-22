@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Súper Control Familiar</title>
+    
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3737/3737372.png">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { 
+            --fondo: #6F4E37; --tarjeta: #E6D5B8; --texto: #3D2B1F; 
+            --gris: #4d4d4d; --azul: #2C5E8A; --verde: #27ae60; --rojo: #c0392b;
+        }
+        body { font-family: sans-serif; background: var(--fondo); margin: 0; padding-bottom: 220px; color: white; touch-action: manipulation; }
+        
+        .header { 
+            background: var(--tarjeta); padding: 15px; position: sticky; top: 0; z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3); color: var(--texto);
+        }
+        .header-info { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        
+        .total-caja { background: var(--gris); color: white; padding: 12px; border-radius: 12px; text-align: center; min-width: 110px; }
+        #total { font-size: 26px; font-weight: bold; }
+
+        .barra-presupuesto { width: 100%; height: 6px; background: #ccc; border-radius: 3px; overflow: hidden; }
+        #progreso { width: 0%; height: 100%; background: var(--verde); transition: 0.3s; }
+
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 12px; }
+        
+        .boton { 
+            background: var(--tarjeta); border-radius: 15px; padding: 15px; 
+            display: flex; flex-direction: column; align-items: center; border: none; 
+            color: var(--texto); box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+        }
+        .boton:active { background: #D1B894; transform: scale(0.95); }
+        .boton i { font-size: 24px; margin-bottom: 6px; }
+        .boton span { font-weight: bold; font-size: 13px; text-align: center; line-height: 1.1; }
+
+        .panel-fijo {
+            position: fixed; bottom: 0; left: 0; right: 0;
+            background: #2D3436; padding: 15px; z-index: 1000;
+            border-top: 3px solid var(--tarjeta);
+        }
+        .fila-ajuste { display: flex; justify-content: space-around; margin-bottom: 15px; }
+        .btn-a { width: 65px; height: 65px; border-radius: 35px; border: none; color: white; font-weight: bold; font-size: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        
+        /* Colores Iconos */
+        .f { color: #D35400; } .c { color: #A93226; } .l { color: #2E86C1; } .h { color: #512E5F; } .d { color: #795548; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <div class="header-info">
+        <div><h1 style="margin:0; font-size:18px;">🛒 Super Control</h1><small id="info">Toca para sumar</small></div>
+        <div class="total-caja"><span id="total">0.00€</span></div>
+    </div>
+    <div class="barra-presupuesto"><div id="progreso"></div></div>
+</div>
+
+<div class="grid">
+    <button class="boton" onclick="sumar('Fruta', 2.50)"><i class="fas fa-apple-whole f"></i><span>Fruta</span></button>
+    <button class="boton" onclick="sumar('Verdura', 1.80)"><i class="fas fa-carrot f"></i><span>Verdura</span></button>
+    <button class="boton" onclick="sumar('Carne', 6.50)"><i class="fas fa-drumstick-bite c"></i><span>Carne</span></button>
+    <button class="boton" onclick="sumar('Pescado', 8.00)"><i class="fas fa-fish l"></i><span>Pescado</span></button>
+    <button class="boton" onclick="sumar('Embutido', 3.50)"><i class="fas fa-bacon c"></i><span>Embutido</span></button>
+    
+    <button class="boton" onclick="sumar('Leche', 1.15)"><i class="fas fa-droplet l"></i><span>Leche</span></button>
+    <button class="boton" onclick="sumar('Yogures', 2.25)"><i class="fas fa-ice-cream l"></i><span>Yogures/Postre</span></button>
+    <button class="boton" onclick="sumar('Huevos', 2.45)"><i class="fas fa-egg d"></i><span>Huevos</span></button>
+    <button class="boton" onclick="sumar('Pan', 1.00)"><i class="fas fa-bread-slice d"></i><span>Panadería</span></button>
+    <button class="boton" onclick="sumar('Pasta/Arroz', 1.30)"><i class="fas fa-box d"></i><span>Pasta/Arroz</span></button>
+    <button class="boton" onclick="sumar('Aceite', 8.50)"><i class="fas fa-oil-can d"></i><span>Aceite</span></button>
+    <button class="boton" onclick="sumar('Legumbres', 1.80)"><i class="fas fa-seedling d"></i><span>Legumbres</span></button>
+    <button class="boton" onclick="sumar('Conservas', 2.20)"><i class="fas fa-jar d"></i><span>Conservas</span></button>
+    <button class="boton" onclick="sumar('Café/Cacao', 3.50)"><i class="fas fa-mug-hot d"></i><span>Café/Cacao</span></button>
+
+    <button class="boton" onclick="sumar('Limpieza', 4.50)"><i class="fas fa-soap h"></i><span>Limpieza</span></button>
+    <button class="boton" onclick="sumar('Aseo', 3.80)"><i class="fas fa-pump-soap h"></i><span>Higiene Pers.</span></button>
+    <button class="boton" onclick="sumar('Papel', 3.00)"><i class="fas fa-toilet-paper h"></i><span>Papel/Varios</span></button>
+    <button class="boton" onclick="sumar('Bebidas', 2.00)"><i class="fas fa-bottle-water l"></i><span>Bebidas</span></button>
+    <button class="boton" onclick="sumar('Congelado', 5.50)"><i class="fas fa-snowflake l"></i><span>Congelados</span></button>
+    <button class="boton" onclick="sumar('Dulces', 2.10)"><i class="fas fa-cookie c"></i><span>Dulce/Snack</span></button>
+</div>
+
+<div class="panel-fijo">
+    <div class="fila-ajuste">
+        <button class="btn-a" style="background:var(--rojo)" onclick="sumar('DTO', -1.00)">-1€</button>
+        <button class="btn-a" style="background:var(--azul)" onclick="sumar('Ajuste', 0.10)">+10c</button>
+        <button class="btn-a" style="background:var(--azul)" onclick="sumar('Ajuste', 0.50)">+50c</button>
+        <button class="btn-a" style="background:var(--azul)" onclick="sumar('Ajuste', 1.00)">+1€</button>
+        <button class="btn-a" style="background:var(--gris)" onclick="reiniciar()">CLEAR</button>
+    </div>
+</div>
+
+<script>
+    let total = parseFloat(localStorage.getItem('compra_total')) || 0;
+    const LIMITE = 180; // Puedes cambiar tu límite aquí
+
+    function actualizar() {
+        document.getElementById('total').innerText = total.toFixed(2) + '€';
+        const porc = Math.min((total / LIMITE) * 100, 100);
+        const barra = document.getElementById('progreso');
+        barra.style.width = porc + "%";
+        barra.style.background = porc > 90 ? "var(--rojo)" : (porc > 70 ? "#f1c40f" : "var(--verde)");
+    }
+
+    function sumar(n, p) {
+        total += p;
+        if (total < 0) total = 0;
+        localStorage.setItem('compra_total', total);
+        document.getElementById('info').innerText = "Último: " + n;
+        actualizar();
+        if(navigator.vibrate) navigator.vibrate(40);
+    }
+
+    function reiniciar() {
+        if(confirm("¿Borrar la cuenta actual?")) {
+            total = 0; localStorage.setItem('compra_total', 0);
+            actualizar();
+        }
+    }
+
+    actualizar();
+</script>
+</body>
+</html>
